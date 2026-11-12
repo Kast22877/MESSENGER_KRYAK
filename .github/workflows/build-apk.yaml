@@ -11,27 +11,27 @@ concurrency:
 
 jobs:
   build_apk:
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
+    runs-on: ubuntu-26.04
+    timeout-minutes: 90
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version-file: .fvmrc
-          cache: true
+      - uses: ./.github/actions/free_up_space
 
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
+      - name: Install Flutter
+        run: |
+          FLUTTER_VERSION=$(python3 -c "import json; print(json.load(open('.fvmrc'))['flutter'])")
+          echo "Flutter $FLUTTER_VERSION"
+          git clone --depth 1 --branch "$FLUTTER_VERSION" https://github.com/flutter/flutter.git "$HOME/flutter"
+          echo "$HOME/flutter/bin" >> "$GITHUB_PATH"
+
+      - name: Check tools
+        run: |
+          flutter --version
+          java -version
+          which keytool
 
       - uses: dtolnay/rust-toolchain@stable
-
-      - name: Free disk space
-        run: |
-          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/share/boost "$AGENT_TOOLSDIRECTORY" || true
-          df -h /
 
       - name: Signing key
         env:
@@ -45,7 +45,7 @@ jobs:
           else
             PASS=temporarypass
             keytool -genkeypair -v -keystore key.jks -alias key -keyalg RSA -keysize 2048 \
-              -validity 10000 -storepass "$PASS" -keypass "$PASS" -dname "CN=Messenger"
+              -validity 10000 -storepass "$PASS" -keypass "$PASS" -dname "CN=KRYAK"
           fi
           printf "storePassword=%s\nkeyPassword=%s\nkeyAlias=key\nstoreFile=../key.jks\n" "$PASS" "$PASS" > key.properties
 
@@ -54,8 +54,8 @@ jobs:
       - name: Build APK
         run: flutter build apk --release --split-per-abi
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
-          name: messenger-apk
+          name: KRYAK-apk
           path: build/app/outputs/flutter-apk/*-release.apk
           retention-days: 30
