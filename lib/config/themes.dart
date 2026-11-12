@@ -45,10 +45,41 @@ abstract class FluffyThemes {
     Brightness brightness, [
     Color? seed,
   ]) {
+    final isDark = brightness == Brightness.dark;
+    // Glass-палитра мессенджера: нейтральные поверхности + фиолетовый акцент
     final colorScheme = ColorScheme.fromSeed(
       brightness: brightness,
       seedColor: seed ?? Color(AppSettings.colorSchemeSeedInt.value),
-      dynamicSchemeVariant: DynamicSchemeVariant.rainbow,
+      dynamicSchemeVariant: DynamicSchemeVariant.fidelity,
+    ).copyWith(
+      primary: const Color(0xFF7C3AED),
+      onPrimary: const Color(0xFFFFFFFF),
+      primaryContainer: const Color(0xFF6D28D9),
+      onPrimaryContainer: const Color(0xFFFFFFFF),
+      secondaryContainer:
+          isDark ? const Color(0xFF2A2440) : const Color(0xFFEDE9FE),
+      onSecondaryContainer:
+          isDark ? const Color(0xFFE9E3FF) : const Color(0xFF3B1C8C),
+      tertiaryContainer:
+          isDark ? const Color(0xFF23252E) : const Color(0xFFFFFFFF),
+      onTertiaryContainer:
+          isDark ? const Color(0xFFF4F5F8) : const Color(0xFF0B0D12),
+      surface: isDark ? const Color(0xFF0E0F13) : const Color(0xFFEEF0F4),
+      onSurface: isDark ? const Color(0xFFF4F5F8) : const Color(0xFF0B0D12),
+      onSurfaceVariant:
+          isDark ? const Color(0xFFA1A6B4) : const Color(0xFF5B6170),
+      surfaceContainerLowest:
+          isDark ? const Color(0xFF0B0C10) : const Color(0xFFFFFFFF),
+      surfaceContainerLow:
+          isDark ? const Color(0xFF14151B) : const Color(0xFFF7F8FB),
+      surfaceContainer:
+          isDark ? const Color(0xFF1A1C23) : const Color(0xFFFFFFFF),
+      surfaceContainerHigh:
+          isDark ? const Color(0xFF20222B) : const Color(0xFFE8EAF0),
+      surfaceContainerHighest:
+          isDark ? const Color(0xFF272A34) : const Color(0xFFDFE2E9),
+      outlineVariant:
+          isDark ? const Color(0xFF2C2F3A) : const Color(0xFFD9DCE4),
     );
     final isColumnMode = FluffyThemes.isColumnMode(context);
     final dividerColor = brightness == Brightness.dark
@@ -59,6 +90,7 @@ abstract class FluffyThemes {
       useMaterial3: true,
       brightness: brightness,
       colorScheme: colorScheme,
+      scaffoldBackgroundColor: colorScheme.surface,
       dividerColor: dividerColor,
       segmentedButtonTheme: SegmentedButtonThemeData(
         style: SegmentedButton.styleFrom(

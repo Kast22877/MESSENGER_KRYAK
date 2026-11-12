@@ -1,5 +1,5 @@
 {
-  "applicationName": "FluffyChat",
+  "applicationName": "KRYAK",
   "defaultHomeserver": "matrix.org",
   "presetHomeserver": "",
   "welcomeText": "",
@@ -27,6 +27,6 @@
   "shareKeysWith": "all",
   "noEncryptionWarningShown": false,
   "displayChatDetailsColumn": false,
-  "colorSchemeSeedInt": 4283835834,
+  "colorSchemeSeedInt": 4286331629,
   "enableSoftLogout": false
 }
