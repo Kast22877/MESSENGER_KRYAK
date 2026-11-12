@@ -52,7 +52,7 @@ jobs:
       - run: flutter pub get
 
       - name: Build APK
-        run: flutter build apk --release --split-per-abi
+       run: flutter build apk --release
 
       - uses: actions/upload-artifact@v7
         with:
